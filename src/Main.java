@@ -3,27 +3,25 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         System.out.println("Welcome to TheBestCalc! Please, input parameters to calculate. You are allowed to input Latin or Arabic characters from 1 to 10.");
         Scanner scanner = new Scanner(System.in);
         String inputValue = scanner.nextLine();
         calc(inputValue);
 
-
     }
 
-    static void calc(String input) throws IOException {
+    static void calc(String input) throws Exception {
         String[] token = input.split(" ");
         if (token.length < 2) {
-            throw new IOException("Input less than 2 arguments. Could you, please, input no more than 2 number");
+            throw new Exception("Input less than 2 arguments. Could you, please, input no more than 2 number");
         }
         if (token.length > 3) {
-            throw new IOException("Input more than 2 arguments. Could you, please, input no more than 2 number");
+            throw new Exception("Input more than 2 arguments. Could you, please, input no more than 2 number");
         }
         String a = token[0];
         String b = token[2];
         if ((isLatin(a, LatinNum.class) && (isLatin(b, LatinNum.class)))) {
-            System.out.println("latin");
             int x = convertFromLatinToArabic(a);
             int y = convertFromLatinToArabic(b);
             if (checkLegalBoard(x) && checkLegalBoard(y)){
@@ -37,47 +35,50 @@ public class Main {
                     case ("-"):
                         int z1 = x - y;
                         if (z1 < 1) {
-                            throw new IOException("Input illegal arguments. Result can't be less 1.");
+                            throw new Exception("Input illegal arguments. Result can't be less 1.");
                         }
                     System.out.println("Result is " + convertFromArabicToLatin(z1));
                     break;
                     case ("/"):
                         int z2 = x / y;
                         if (z2 < 1) {
-                            throw new IOException("Input illegal arguments. Result can't be less 1.");
+                            throw new Exception("Input illegal arguments. Result can't be less 1.");
                         }
-                    System.out.println("Result is " + z2);
+                    System.out.println("Result is " + convertFromArabicToLatin(z2));
                     break;
                     default:
-                    throw new IOException("Input illegal arithmetic operator.");
+                    throw new Exception("Input illegal arithmetic operator.");
                 }
             } else {
-                throw new IOException("Input illegal arguments. Could you, please, input numbers from I to X.");
+                throw new Exception("Input illegal arguments. Could you, please, input numbers from I to X.");
             }
             return;
         }
         if (isArabian(a) && isArabian(b)) {
-            System.out.println("arab");
-//            else {
-//            switch (token[1]) {
-//                case ("+"):
-//                    System.out.println("Result is " + (a + b));
-//                    break;
-////                case ("*"):
-////                    System.out.println("Result is " + (a * b));
-////                    break;
-////                case ("-"):
-////                    System.out.println("Result is " + (a - b));
-////                    break;
-////                case ("/"):
-////                    System.out.println("Result is " + (a / b));
-////                    break;
-//                default:
-//                    throw new IOException("Input illegal arithmetic operator");
-//            }
-            return;
+            int x = Integer.parseInt(a);
+            int y = Integer.parseInt(b);
+            if (checkLegalBoard(x) && checkLegalBoard(y)){
+                switch (token[1]) {
+                case ("+"):
+                    System.out.println("Result is " + (x + y));
+                    break;
+                case ("*"):
+                    System.out.println("Result is " + (x * y));
+                    break;
+                case ("-"):
+                    int z1 = x - y;
+                    System.out.println("Result is " + z1);
+                    break;
+                case ("/"):
+                    int z2 = x / y;
+                    System.out.println("Result is " + z2);
+                    break;
+                default:
+                    throw new Exception("Input illegal arithmetic operator.");
+                }
+            }
         } else {
-            throw new IOException("Input illegal arguments. Could you, please, input numbers Arabic numbers from 1 to 10 in format (1 + 4) or Latin numbers from I to X in format (I + IV).");
+            throw new Exception("Input illegal arguments. Could you, please, input numbers Arabic numbers from 1 to 10 in format (1 + 4) or Latin numbers from I to X in format (I + IV).");
         }
     }
 
@@ -107,10 +108,10 @@ public class Main {
         numMap.put(50, "L0");
         numMap.put(40, "XL");
         numMap.put(10, "X");
-            numMap.put(9, "IX");
-            numMap.put(5, "V");
-            numMap.put(4, "IV");
-            numMap.put(1, "I");
+        numMap.put(9, "IX");
+        numMap.put(5, "V");
+        numMap.put(4, "IV");
+        numMap.put(1, "I");
 
         int y = numMap.floorKey(num);
         if (num == y) {
@@ -129,9 +130,12 @@ public class Main {
     }
 
     static boolean isArabian (String symbol) {
-        int c = Integer.parseInt(symbol);
-        return true;
-//        return false;
+        try {
+            int c = Integer.parseInt(symbol);
+            return true;
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     static boolean checkLegalBoard (Integer arabicNum) {
