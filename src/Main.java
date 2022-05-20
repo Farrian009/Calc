@@ -8,6 +8,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String inputValue = scanner.nextLine();
         calc(inputValue);
+
     }
 
     static void calc(String input) throws Exception {
