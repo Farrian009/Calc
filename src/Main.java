@@ -8,7 +8,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String inputValue = scanner.nextLine();
         calc(inputValue);
-
     }
 
     static void calc(String input) throws Exception {
@@ -120,7 +119,7 @@ public class Main {
         return numMap.get(y) + convertFromArabicToLatin(num - y);
     }
 
-    static <E extends Enum<E>> boolean isLatin (String symbol, Class<E> enumClass) {
+    static <E extends Enum<E>> boolean isLatin (String symbol, Class<E> enumClass) throws Exception {
         for (E e : enumClass.getEnumConstants()) {
             if (e.name().equals(symbol)) {
                 return true;
@@ -138,11 +137,10 @@ public class Main {
         return false;
     }
 
-    static boolean checkLegalBoard (Integer arabicNum) {
-        if (arabicNum >= 1 || arabicNum <= 10) {
+    static boolean checkLegalBoard (Integer arabicNum) throws Exception {
+        if (arabicNum >= 1 && arabicNum <= 10) {
             return true;
         }
-        return false;
+        throw new Exception("Input illegal arguments. Could you, please, input Arabic numbers from 1 to 10 or Latin numbers from I to X.");
     }
-
 }
